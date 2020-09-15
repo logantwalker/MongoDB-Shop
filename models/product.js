@@ -16,30 +16,38 @@ class Product {
     //also to specify what collection you want to work with 
 
     //if it doesnt exist yet, it will be created when we insert data
-    db.collection('products')
+    return db.collection('products').insertOne(this)
+      .then(result =>{
+        console.log(result)
+      })
+      .catch(err =>{
+        console.log(err);
+        throw err;
+      })
+  }
+
+  static fetchAll(){
+
+    const db = getDb();
+    //use find to fetch data. you can also apply a filter to find specific data i.e. {name: 'Logan'}
+    //does not return a promise, but instead returns something called a cursor
+    //cursor is an obj provided by mongodb which allows us to go through our documents step by step
+    //find gives you a handle which you can use to iterate through the documents
+    //but you can use .toArray() to return all of the documents, but that is a bad idea with a lot of data.
+
+    return db
+      .collection('products')
+      .find()
+      .toArray()
+      .then(products =>{
+        console.log(products);
+        return products;
+      })
+      .catch(err =>{
+        console.log(err);
+        throw err;
+      })
   }
 }
-
-const Product = sequelize.define('product', {
-  id: {
-    type: Sequelize.INTEGER,
-    autoIncrement: true,
-    allowNull: false,
-    primaryKey: true
-  },
-  title: Sequelize.STRING,
-  price: {
-    type: Sequelize.DOUBLE,
-    allowNull: false
-  },
-  imageUrl: {
-    type: Sequelize.STRING,
-    allowNull: false
-  },
-  description: {
-    type: Sequelize.STRING,
-    allowNull: false
-  }
-});
 
 module.exports = Product;

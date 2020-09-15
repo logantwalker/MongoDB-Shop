@@ -3,17 +3,17 @@ const path = require('path');
 const express = require('express');
 
 const errorController = require('./controllers/error');
-const mongoConnect = require('./util/database');
+const mongoConnect = require('./util/database').mongoConnect;
 
 const app = express();
 
-const PORT = 3000;
+const PORT = 8080;
 
 app.set('view engine', 'ejs');
 app.set('views', 'views');
 
 const adminRoutes = require('./routes/admin');
-// const shopRoutes = require('./routes/shop');
+const shopRoutes = require('./routes/shop');
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
@@ -25,13 +25,15 @@ app.use((req, res, next) => {
   //     next();
   //   })
   //   .catch(err => console.log(err));
+  next();
 });
 
 app.use('/admin', adminRoutes);
-// app.use(shopRoutes);
+app.use(shopRoutes);
 
 app.use(errorController.get404);
 
 mongoConnect(()=>{
+  console.log(`http://localhost:${PORT}/admin/add-product`)
   app.listen(PORT)
 })
