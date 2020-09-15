@@ -39,6 +39,7 @@ exports.getProduct = (req, res, next) => {
 exports.getIndex = (req, res, next) => {
   Product.fetchAll()
     .then(products => {
+      //sending data for ejs templates to render
       res.render('shop/index', {
         prods: products,
         pageTitle: 'Shop',
