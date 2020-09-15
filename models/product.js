@@ -1,4 +1,5 @@
 //importing our database connection from the database.js module
+const mongodb = require('mongodb');
 const getDb = require('../util/database').getDb;
 
 class Product {
@@ -48,11 +49,13 @@ class Product {
         throw err;
       })
   }
-
+  //_id is a special mongodb data type. you must require mongodb to access it
   static findById(prodId) {
     const db=getDb();
     return db.collection('products')
-      .find({_id: prodId})
+      //this mongodb method wraps your id string with the ObjectId bson data type
+      // so the system will recognize what you are looking for
+      .find({_id: new mongodb.ObjectId(prodId)})
       .next()
       .then(product =>{
         console.log(product);
