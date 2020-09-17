@@ -8,12 +8,13 @@ class Product {
     this.price = price;
     this.description = description;
     this.imageUrl = imageUrl;
-    this._id = id;
+    this._id = id ? new mongodb.ObjectId(id) : null;
   }
 
   save() {
     const db = getDb();
     let dbOp
+    //if the product already exists, the if-block is ran to update an exisiting product
     if(this._id){
       //update the product
 
@@ -78,7 +79,18 @@ class Product {
       });
   }
 
-  // static Edit()
+  static deleteById(prodId){
+    const db = getDb();
+    return db.collection('products')
+      .deleteOne({_id: new mongodb.ObjectId(prodId)})
+      .then(result =>{
+        console.log('Deleted');
+      })
+      .catch(err=>{
+        console.log(err);
+        throw err;
+      });
+  }
 }
 
 module.exports = Product;

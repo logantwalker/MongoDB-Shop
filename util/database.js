@@ -10,7 +10,8 @@ let _db;
 //this will keep on running
 const mongoConnect = (callback) =>{
 
-  MongoClient.connect('mongodb+srv://lwalker37:amv12v@cluster0.p7jgf.mongodb.net/Cluster0?retryWrites=true&w=majority',
+  MongoClient.connect(
+    'mongodb+srv://lwalker37:amv12v@cluster0.p7jgf.mongodb.net/Cluster0?retryWrites=true&w=majority',
   {   useNewUrlParser: true, 
       useUnifiedTopology: true 
   })
